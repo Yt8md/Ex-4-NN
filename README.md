@@ -1,8 +1,8 @@
 
-<H3>ENTER YOUR NAME</H3>
-<H3>ENTER YOUR REGISTER NO.</H3>
+<H3>ENTER YOUR NAME: MATHESH S</H3>
+<H3>ENTER YOUR REGISTER NO: 212223230123</H3>
 <H3>EX. NO.4</H3>
-<H3>DATE:</H3>
+<H3>DATE: 25-11-2026</H3>
 <H1 ALIGN =CENTER>Implementation of MLP with Backpropagation for Multiclassification</H1>
 <H3>Aim:</H3>
 To implement a Multilayer Perceptron for Multi classification
@@ -116,11 +116,124 @@ Normalize our dataset.
 
 <H3>Program:</H3> 
 
-Insert your code here
+```python
+
+# ============================================
+# HANDWRITTEN DIGITS CLASSIFICATION USING MLP
+# DATA PREPROCESSING AND MODEL EVALUATION
+# ============================================
+
+# 1. Import libraries
+import pandas as pd
+import numpy as np
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import (
+    confusion_matrix,
+    classification_report,
+    accuracy_score
+)
+
+# 2. Load dataset
+digitsdata = pd.read_csv("digits_dataset.csv")
+
+print("Dataset loaded successfully")
+print("Dataset shape:", digitsdata.shape)
+print(digitsdata.head())
+
+# 3. Check missing values
+print("Missing values:", digitsdata.isnull().sum().sum())
+
+# 4. Check duplicate records
+print("Duplicate records:", digitsdata.duplicated().sum())
+
+# 5. Separate input and output
+feature_cols = ['pixel_' + str(i) for i in range(64)]
+
+X = digitsdata[feature_cols]
+y = digitsdata['Class']
+
+print("Input shape:", X.shape)
+print("Output shape:", y.shape)
+
+# 6. Check unique classes
+print("Unique classes:", sorted(y.unique()))
+
+# 7. Check class distribution
+print("Class distribution:")
+print(y.value_counts().sort_index())
+
+# 8. Split dataset into training and testing
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.20,
+    random_state=42,
+    stratify=y
+)
+
+print("Training samples:", X_train.shape)
+print("Testing samples:", X_test.shape)
+
+# 9. Feature Scaling using MinMaxScaler
+scaler = MinMaxScaler()
+
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# 10. Create improved MLP Classifier
+mlp = MLPClassifier(
+    hidden_layer_sizes=(100, 100),
+    activation='relu',
+    solver='adam',
+    alpha=0.0001,
+    batch_size='auto',
+    learning_rate_init=0.001,
+    max_iter=1000,
+    early_stopping=True,
+    validation_fraction=0.1,
+    n_iter_no_change=30,
+    random_state=42
+)
+
+# 11. Train the model
+mlp.fit(X_train, y_train)
+
+print("Model training completed")
+print("Iterations:", mlp.n_iter_)
+
+# 12. Make predictions
+predictions = mlp.predict(X_test)
+
+print("Predictions:")
+print(predictions)
+
+# 13. Confusion Matrix
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, predictions))
+
+# 14. Classification Report
+print("Classification Report:")
+print(classification_report(y_test, predictions))
+
+# 15. Calculate accuracy
+accuracy = accuracy_score(y_test, predictions)
+
+print("Model Accuracy:", accuracy * 100, "%")
+
+```
 
 <H3>Output:</H3>
 
-Show your results here
+<img width="792" height="487" alt="image" src="https://github.com/user-attachments/assets/e72b7255-f3b1-4b17-8788-c169ffe11f14" />
+
+<img width="570" height="528" alt="image" src="https://github.com/user-attachments/assets/a50c37a0-7441-4d02-8ef2-c346149b090a" />
+
+<img width="742" height="473" alt="image" src="https://github.com/user-attachments/assets/ea32ec0b-b910-447c-9f9c-ccec639b3be7" />
+
+<img width="578" height="415" alt="image" src="https://github.com/user-attachments/assets/5bb4541c-2063-482a-8f76-3885203d21ec" />
+
 
 <H3>Result:</H3>
 Thus, MLP is implemented for multi-classification using python.
